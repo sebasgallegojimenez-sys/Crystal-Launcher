@@ -2,21 +2,19 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
-    <link rel="stylesheet" href="assets/css/index.css">
 
     <style>
-        /* Reset */
         html, body {
             margin: 0;
             padding: 0;
             overflow: hidden;
             height: 100%;
             width: 100%;
-            color: white;
             font-family: "Segoe UI", Arial, sans-serif;
+            color: white;
         }
 
-        /* Fondo de video */
+        /* Video de fondo */
         #backgroundVideo {
             position: fixed;
             top: 0;
@@ -38,69 +36,68 @@
             z-index: -1;
         }
 
-        /* Contenedor centrado */
+        /* Contenedor principal */
         #splash {
-            position: fixed;
+            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 2;
+            text-align: center;
 
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
+            justify-content: center;
+
+            gap: 10px;
         }
 
         /* Logo */
-        #splash img {
+        #logo {
             width: 150px;
             height: 150px;
-            border-radius: 20px;
-            margin-bottom: 15px;
+            border-radius: 25px;
+            box-shadow: 0 0 15px rgba(255,255,255,0.4);
         }
 
-        /* Título principal */
         .splash-title {
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             font-weight: bold;
-            margin-top: 8px;
-            text-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+            margin-top: 5px;
+            text-shadow: 0 0 8px rgba(255,255,255,0.8);
         }
 
-        /* Subtítulo */
         .splash-author {
             font-size: 0.9rem;
             opacity: 0.9;
-            margin-top: -4px;
         }
 
-        /* Mensaje de estado */
         .message {
-            margin-top: 15px;
-            font-size: 1.05rem;
-            text-shadow: 0 0 6px rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+            margin-top: 10px;
         }
 
-        /* Barra */
-        progress.progress {
-            width: 200px;
-            height: 8px;
-            margin-top: 15px;
-            border-radius: 5px;
-            overflow: hidden;
-            background: rgba(255,255,255,0.25);
+        progress {
+            width: 60%;
+            height: 10px;
+            margin-top: 20px;
+            border-radius: 6px;
+        }
+
+        progress::-webkit-progress-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
         }
 
         progress::-webkit-progress-value {
             background: white;
+            border-radius: 6px;
         }
 
-        /* Mensaje sin internet */
-        #offlineWarning {
+        #offline {
             margin-top: 10px;
             font-size: 0.9rem;
-            color: #ff6b6b;
+            color: #ff6666;
             display: none;
         }
     </style>
@@ -108,7 +105,7 @@
 
 <body>
 
-    <!-- Fondo -->
+    <!-- Video -->
     <video id="backgroundVideo" autoplay muted loop playsinline>
         <source src="assets/videos/index.mp4" type="video/mp4">
     </video>
@@ -116,35 +113,47 @@
     <div id="overlay"></div>
 
     <!-- Splash -->
-    <div id="splash" style="display:none;">
+    <div id="splash" style="display:none">
 
-        <img src="assets/images/icon.png" alt="Logo">
+        <img id="logo" src="assets/images/icon.png">
 
         <p class="splash-title">Crystal Launcher</p>
         <p class="splash-author">@sebas_owo1</p>
 
-        <p class="message" id="statusMessage">Buscando actualizaciones...</p>
+        <p class="message">Buscando actualizaciones...</p>
 
-        <progress value="0" max="100" class="progress"></progress>
+        <progress id="bar" max="100" value="0"></progress>
 
-        <p id="offlineWarning">⚠ No hay conexión a internet</p>
+        <p id="offline">Sin conexión a internet</p>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("splash").style.display = "flex";
+            const splash = document.getElementById("splash");
+            const bar = document.getElementById("bar");
+            const offline = document.getElementById("offline");
 
-            function checkInternet() {
-                fetch("https://google.com", { mode: "no-cors" })
-                    .then(() => {
-                        offlineWarning.style.display = "none";
-                    })
-                    .catch(() => {
-                        offlineWarning.style.display = "block";
-                    });
+            splash.style.display = "flex";
+
+            // Simular carga
+            let value = 0;
+            const interval = setInterval(() => {
+                value += 2;
+                if (value > 100) value = 100;
+                bar.value = value;
+
+                if (value === 100) clearInterval(interval);
+            }, 90);
+
+            // Detectar internet
+            function checkConnection() {
+                if (navigator.onLine) offline.style.display = "none";
+                else offline.style.display = "block";
             }
 
-            setInterval(checkInternet, 3000);
+            checkConnection();
+            window.addEventListener("online", checkConnection);
+            window.addEventListener("offline", checkConnection);
         });
     </script>
 
