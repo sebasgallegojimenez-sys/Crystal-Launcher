@@ -4,18 +4,18 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
     <link rel="stylesheet" href="assets/css/index.css">
     <style>
-        /* Evita scroll y márgenes */
+
         html, body {
             margin: 0;
             padding: 0;
             overflow: hidden;
             height: 100%;
             width: 100%;
-            color: white;
             font-family: "Segoe UI", Arial, sans-serif;
+            color: white;
         }
 
-        /* Video de fondo */
+        /* VIDEO DE FONDO */
         #backgroundVideo {
             position: fixed;
             top: 0;
@@ -26,102 +26,99 @@
             z-index: -2;
         }
 
-        /* Capa oscura encima del video */
+        /* CAPA OSCURA */
         #overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0, 0, 0, 0.4);
             z-index: -1;
         }
 
-        /* Contenedor principal TOTALMENTE CENTRADO pero un poco más ARRIBA */
+        /* CONTENEDOR SPLASH (CENTRADO PERFECTO) */
         #splash {
-            position: absolute;
-            top: 35%;               /* <<< SUBE O BAJA aquí */
+            position: fixed;
+            top: 45%; /* <── SUBIDO */
             left: 50%;
             transform: translate(-50%, -50%);
+            z-index: 2;
 
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-
-            z-index: 1;
             text-align: center;
         }
 
-        /* Logo */
-        #splash img.splash {
-            width: 130px;
-            height: 130px;
-            margin-bottom: 18px; /* separación perfecta */
+        /* LOGO */
+        img.splash {
+            width: 128px;
+            height: 128px;
+            margin-bottom: 15px; /* <── Subido */
+            border-radius: 20px;
         }
 
-        /* Textos */
+        /* TEXTOS */
         .splash-message,
         .splash-author,
         .message {
-            color: #ffffff;
+            font-size: 1.2rem;
+            margin: 6px 0;
             text-shadow: 0 0 6px rgba(255,255,255,0.8);
-            font-size: 1.1rem;
-            margin: 8px 0;
         }
 
         .splash-author .author {
             font-weight: bold;
         }
 
-        /* Barra de progreso */
+        /* BARRA DE PROGRESO */
         progress.progress {
-            width: 260px;
+            width: 50%;
             height: 10px;
             margin-top: 15px;
             border-radius: 4px;
             overflow: hidden;
-            background: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.2);
         }
 
         progress.progress::-webkit-progress-bar {
-            background: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.2);
         }
-
         progress.progress::-webkit-progress-value {
             background: white;
         }
-
         progress.progress::-moz-progress-bar {
             background: white;
         }
+
     </style>
 </head>
 <body>
 
-    <!-- Video de fondo -->
+    <!-- VIDEO -->
     <video id="backgroundVideo" autoplay muted loop playsinline>
         <source src="assets/videos/index.mp4" type="video/mp4">
         Tu navegador no soporta video.
     </video>
 
-    <!-- Capa oscura -->
+    <!-- CAPA OSCURA -->
     <div id="overlay"></div>
 
-    <!-- Splash -->
+    <!-- SPLASH -->
     <div id="splash" style="display:none">
         <img class="splash" src="assets/images/icon.png" />
         <p class="splash-message">Cargando...</p>
-        <p class="splash-author"><span class="author">Selvania Launcher</span></p>
+        <p class="splash-author"><span class="author">Crystal Launcher</span></p>
         <p class="message">Buscando actualizaciones...</p>
         <progress value="0" max="100" class="progress"></progress>
     </div>
 
-    <!-- Script -->
+    <!-- SCRIPT -->
     <script src="assets/js/index.js" type="module"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('splash').style.display = 'block';
+            document.getElementById('splash').style.display = 'flex';
         });
     </script>
 
