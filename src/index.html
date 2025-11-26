@@ -1,19 +1,18 @@
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
     <link rel="stylesheet" href="assets/css/index.css">
     <style>
-        /* Reset y configuración base */
+        /* Evita scroll y márgenes */
         html, body {
             margin: 0;
             padding: 0;
+            overflow: hidden;
             height: 100%;
             width: 100%;
-            overflow: hidden;
-            font-family: "Segoe UI", Arial, sans-serif;
             color: white;
+            font-family: "Segoe UI", Arial, sans-serif;
         }
 
         /* Video de fondo */
@@ -34,41 +33,41 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.45);
+            background: rgba(0,0,0,0.4);
             z-index: -1;
         }
 
-        /* Contenedor central */
+        /* Contenedor principal TOTALMENTE CENTRADO pero un poco más ARRIBA */
         #splash {
-            position: fixed;
-            top: 50%;
+            position: absolute;
+            top: 35%;               /* <<< SUBE O BAJA aquí */
             left: 50%;
             transform: translate(-50%, -50%);
-            
+
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
 
+            z-index: 1;
             text-align: center;
-            z-index: 10;
         }
 
         /* Logo */
-        #splash img {
+        #splash img.splash {
             width: 130px;
             height: 130px;
-            margin-bottom: 15px;
-            border-radius: 25px;
+            margin-bottom: 18px; /* separación perfecta */
         }
 
         /* Textos */
         .splash-message,
         .splash-author,
         .message {
-            font-size: 1.2rem;
-            margin: 6px 0;
-            text-shadow: 0 0 8px rgba(255,255,255,0.8);
+            color: #ffffff;
+            text-shadow: 0 0 6px rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+            margin: 8px 0;
         }
 
         .splash-author .author {
@@ -77,24 +76,27 @@
 
         /* Barra de progreso */
         progress.progress {
-            width: 50%;
+            width: 260px;
             height: 10px;
-            margin-top: 18px;
-            border-radius: 5px;
+            margin-top: 15px;
+            border-radius: 4px;
             overflow: hidden;
             background: rgba(255,255,255,0.25);
-        }
-
-        progress.progress::-webkit-progress-value {
-            background: #ffffff;
         }
 
         progress.progress::-webkit-progress-bar {
             background: rgba(255,255,255,0.25);
         }
+
+        progress.progress::-webkit-progress-value {
+            background: white;
+        }
+
+        progress.progress::-moz-progress-bar {
+            background: white;
+        }
     </style>
 </head>
-
 <body>
 
     <!-- Video de fondo -->
@@ -106,17 +108,22 @@
     <!-- Capa oscura -->
     <div id="overlay"></div>
 
-    <!-- Splash centrado -->
-    <div id="splash">
-        <img src="assets/images/icon.png" alt="Logo">
+    <!-- Splash -->
+    <div id="splash" style="display:none">
+        <img class="splash" src="assets/images/icon.png" />
         <p class="splash-message">Cargando...</p>
-        <p class="splash-author"><span class="author">Crystal Launcher</span></p>
+        <p class="splash-author"><span class="author">Selvania Launcher</span></p>
         <p class="message">Buscando actualizaciones...</p>
         <progress value="0" max="100" class="progress"></progress>
     </div>
 
     <!-- Script -->
     <script src="assets/js/index.js" type="module"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('splash').style.display = 'block';
+        });
+    </script>
 
 </body>
 </html>
