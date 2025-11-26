@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
-
+    <link rel="stylesheet" href="assets/css/index.css">
     <style>
         html, body {
             margin: 0;
@@ -10,7 +10,6 @@
             overflow: hidden;
             height: 100%;
             width: 100%;
-            font-family: "Segoe UI", Arial, sans-serif;
             color: white;
         }
 
@@ -25,135 +24,69 @@
             z-index: -2;
         }
 
-        /* Capa oscura */
+        /* Oscurecer un poco el fondo */
         #overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.45);
+            background: rgba(0,0,0,0.3);
             z-index: -1;
         }
 
-        /* Contenedor principal */
+        /* Splash */
         #splash {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: relative;
+            z-index: 1;
             text-align: center;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
-            gap: 10px;
+            margin-top: 10vh; /* SUBIDO (antes 20vh) */
+            color: white;
         }
 
-        /* Logo */
-        #logo {
-            width: 150px;
-            height: 150px;
-            border-radius: 25px;
-            box-shadow: 0 0 15px rgba(255,255,255,0.4);
+        .splash img {
+            width: 128px;
+            height: 128px;
+            margin-bottom: 10px;
         }
 
-        .splash-title {
-            font-size: 1.7rem;
-            font-weight: bold;
-            margin-top: 5px;
-            text-shadow: 0 0 8px rgba(255,255,255,0.8);
-        }
-
-        .splash-author {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
+        .splash-message,
+        .splash-author,
         .message {
-            font-size: 1.1rem;
-            margin-top: 10px;
+            color: white;
         }
 
-        progress {
-            width: 60%;
-            height: 10px;
-            margin-top: 20px;
-            border-radius: 6px;
-        }
-
-        progress::-webkit-progress-bar {
-            background: rgba(255,255,255,0.2);
-            border-radius: 6px;
-        }
-
-        progress::-webkit-progress-value {
-            background: white;
-            border-radius: 6px;
-        }
-
-        #offline {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #ff6666;
-            display: none;
+        progress.progress {
+            width: 50%;
+            margin-top: 15px;
         }
     </style>
 </head>
-
 <body>
 
-    <!-- Video -->
+    <!-- Fondo -->
     <video id="backgroundVideo" autoplay muted loop playsinline>
         <source src="assets/videos/index.mp4" type="video/mp4">
+        Tu navegador no soporta video.
     </video>
 
+    <!-- Overlay -->
     <div id="overlay"></div>
 
     <!-- Splash -->
     <div id="splash" style="display:none">
-
-        <img id="logo" src="assets/images/icon.png">
-
-        <p class="splash-title">Crystal Launcher</p>
-        <p class="splash-author">@sebas_owo1</p>
-
+        <img class="splash" src="assets/images/icon.png" />
+        <p class="splash-message"></p>
+        <p class="splash-author"><span class="author"></span></p>
         <p class="message">Buscando actualizaciones...</p>
-
-        <progress id="bar" max="100" value="0"></progress>
-
-        <p id="offline">Sin conexión a internet</p>
+        <progress value="0" max="0" class="progress"></progress>
     </div>
 
+    <script src="assets/js/index.js" type="module"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const splash = document.getElementById("splash");
-            const bar = document.getElementById("bar");
-            const offline = document.getElementById("offline");
-
-            splash.style.display = "flex";
-
-            // Simular carga
-            let value = 0;
-            const interval = setInterval(() => {
-                value += 2;
-                if (value > 100) value = 100;
-                bar.value = value;
-
-                if (value === 100) clearInterval(interval);
-            }, 90);
-
-            // Detectar internet
-            function checkConnection() {
-                if (navigator.onLine) offline.style.display = "none";
-                else offline.style.display = "block";
-            }
-
-            checkConnection();
-            window.addEventListener("online", checkConnection);
-            window.addEventListener("offline", checkConnection);
+        document.addEventListener('DOMContentLoaded', () => {
+            const splash = document.getElementById('splash');
+            splash.style.display = 'block';
         });
     </script>
 
