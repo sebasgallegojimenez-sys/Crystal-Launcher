@@ -1,25 +1,32 @@
-<html>
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Crystal Launcher - Splash</title>
+
+    <!-- Puedes quitar el link si prefieres mantener todo en este archivo -->
     <link rel="stylesheet" href="assets/css/index.css">
+
     <style>
-        /* Evita scroll y márgenes */
+        /* Reset y base */
+        * { box-sizing: border-box; }
         html, body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
             height: 100%;
             width: 100%;
-            color: white;
+            overflow: hidden; /* evita scroll */
             font-family: "Segoe UI", Arial, sans-serif;
+            color: #fff;
+            background: #000;
         }
 
-        /* Video de fondo */
+        /* Video de fondo (si no carga, queda negro) */
         #backgroundVideo {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0; /* top:0; left:0; right:0; bottom:0; */
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -29,75 +36,93 @@
         /* Capa oscura encima del video */
         #overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
+            inset: 0;
+            background: rgba(0,0,0,0.45);
             z-index: -1;
         }
 
-        /* Contenedor principal del splash */
-#splash {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
+        /* Contenedor principal del splash: CENTRADO absoluto */
+        #splash {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
 
-    text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+            width: min(90vw, 420px); /* ancho máximo razonable */
+            padding: 18px;
+            text-align: center;
 
-    width: 100%;
-    pointer-events: none; /* Evita bloquear clics si no lo necesitas */
-}
+            /* Estética opcional */
+            background: rgba(0,0,0,0.25);
+            border-radius: 12px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
 
-
-        /* Logo */
-        .splash img {
-            width: 128px;
-            height: 128px;
-            margin-bottom: 20px;
+            /* Permite interacción si en algún momento necesitas botones */
+            pointer-events: auto;
         }
 
-        /* Textos */
+        /* Logo: selector correcto y sin margen grande */
+        #splash img.splash {
+            width: 128px;
+            height: 128px;
+            display: block;
+            margin: 0; /* sin empuje inesperado */
+            border-radius: 18px; /* aspecto agradable */
+            object-fit: cover;
+        }
+
+        /* Textos: control de márgenes */
         .splash-message,
         .splash-author,
         .message {
+            margin: 4px 0;
             color: #ffffff;
-            text-shadow: 0 0 6px rgba(255,255,255,0.8); /* brillo blanco */
-            font-size: 1.1rem;
-            margin: 8px 0;
+            text-shadow: 0 0 8px rgba(255,255,255,0.75);
+            font-size: 1rem;
+            line-height: 1.2;
         }
 
         .splash-author .author {
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 1.05rem;
         }
 
         /* Barra de progreso */
         progress.progress {
-            width: 45%;
-            height: 8px;
-            margin-top: 15px;
-            border-radius: 4px;
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
             overflow: hidden;
-            background: rgba(255,255,255,0.2);
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255,255,255,0.12);
         }
 
+        /* Chrome / Safari */
         progress.progress::-webkit-progress-bar {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.12);
         }
-
         progress.progress::-webkit-progress-value {
-            background: #ffffff;
+            background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
         }
 
+        /* Firefox */
         progress.progress::-moz-progress-bar {
-            background: #ffffff;
+            background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+        }
+
+        /* Pequeño ajuste responsivo */
+        @media (max-width: 420px) {
+            #splash img.splash { width: 96px; height: 96px; }
+            .splash-message, .message { font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -105,28 +130,44 @@
     <!-- Video de fondo -->
     <video id="backgroundVideo" autoplay muted loop playsinline>
         <source src="assets/videos/index.mp4" type="video/mp4">
+        <!-- Si quieres una imagen fallback: -->
+        <!-- <img src="assets/images/fallback.jpg" alt="Fondo"> -->
         Tu navegador no soporta video.
     </video>
 
     <!-- Capa oscura -->
-    <div id="overlay"></div>
+    <div id="overlay" aria-hidden="true"></div>
 
-    <!-- Splash -->
-    <div id="splash" style="display:none">
-        <img class="splash" src="assets/images/icon.png" />
+    <!-- Splash: visible por defecto, puedes ocultarlo con JS si necesitas -->
+    <div id="splash" role="status" aria-live="polite">
+        <!-- La clase del img coincide con el selector CSS (#splash img.splash) -->
+        <img class="splash" src="assets/images/icon.png" alt="Crystal Launcher logo" />
         <p class="splash-message">Cargando...</p>
-        <p class="splash-author"><span class="author">Crystal launcher</span></p>
+        <p class="splash-author"><span class="author">Crystal Launcher</span></p>
         <p class="message">Buscando actualizaciones...</p>
-        <progress value="0" max="100" class="progress"></progress>
+        <progress value="0" max="100" class="progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></progress>
     </div>
 
-    <!-- Script -->
-    <script src="assets/js/index.js" type="module"></script>
-    <script>
-        // Mostrar el splash cuando el DOM esté listo
+    <!-- Script: controla la barra y la visibilidad si lo deseas -->
+    <script type="module">
+        // Ejemplo: animar la barra de progreso de demo (quita o adapta a tu lógica real)
         document.addEventListener('DOMContentLoaded', () => {
-            const splash = document.getElementById('splash');
-            splash.style.display = 'block';
+            const prog = document.querySelector('progress.progress');
+            if(!prog) return;
+
+            // Demo: avanza la barra hasta 100% en 2.5s
+            let value = 0;
+            const interval = setInterval(() => {
+                value += 4; // velocidad demo
+                prog.value = Math.min(value, 100);
+                prog.setAttribute('aria-valuenow', prog.value);
+
+                if (prog.value >= 100) {
+                    clearInterval(interval);
+                    // Ejemplo: ocultar splash cuando termine
+                    // document.getElementById('splash').style.display = 'none';
+                }
+            }, 100);
         });
     </script>
 </body>
