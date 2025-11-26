@@ -1,15 +1,15 @@
 {
     "name": "Crystal-Launcher",
     "preductname": "Crystal Launcher",
-    "version": "1.0.2",
-    "description": "Launcher oficial de Tunki Studio para sus eventos.",
+    "version": "1.0.3",
+    "description": "Launcher oficial de Crystal Studio para sus eventos.",
     "main": "src/app.js",
     "author": {
         "name": "luuxis, Crystal, Inc.",
         "email": "contact@luuxis.fr",
         "url": "https://github.com/luuxis"
     },
-    "url": "http://ext1.bytte.cloud:8124/launcher",
+    "url": "http://51.222.47.158:10009/launcher",
     "scripts": {
         "start": "cross-env-shell NODE_ENV=dev electron .",
         "dev": "cross-env-shell DEV_TOOL=open nodemon --exec npm start",
@@ -22,6 +22,7 @@
         "ignore": "**/test"
     },
     "dependencies": {
+        "discord-rpc": "^4.0.1",
         "electron-updater": "^6.1.8",
         "minecraft-java-core": "^4.1.4",
         "node-abi": "^4.14.0",
