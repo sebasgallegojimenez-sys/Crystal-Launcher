@@ -1,7 +1,7 @@
 {
     "name": "Crystal-Launcher",
     "preductname": "Crystal Launcher",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "description": "Launcher oficial de Crystal Studio para sus eventos.",
     "main": "src/app.js",
     "author": {
